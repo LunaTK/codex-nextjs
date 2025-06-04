@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { Breadcrumb, BreadcrumbItem } from '@/components/ui/breadcrumb'
+import { fade, slideLeft } from '@/lib/transitions'
+import { cn } from '@/lib/utils'
 
 function buildBreadcrumbs(pathname: string): BreadcrumbItem[] {
   const segments = pathname.split('/').filter(Boolean)
@@ -19,7 +21,18 @@ function buildBreadcrumbs(pathname: string): BreadcrumbItem[] {
 export default function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const items = buildBreadcrumbs(pathname)
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true)
+    } else if (mounted) {
+      const t = setTimeout(() => setMounted(false), 300)
+      return () => clearTimeout(t)
+    }
+  }, [open, mounted])
+
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
       <div className="container mx-auto flex items-center gap-4 p-4">
@@ -32,13 +45,21 @@ export default function Navbar() {
         </button>
         <Breadcrumb items={items} />
       </div>
-      {open && (
+      {mounted && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div
-            className="absolute inset-0 bg-black/50"
+            className={cn(
+              "absolute inset-0 bg-black/50",
+              open ? fade.in : fade.out
+            )}
             onClick={() => setOpen(false)}
           />
-          <div className="relative h-full w-64 bg-background p-6 shadow">
+          <div
+            className={cn(
+              "relative h-full w-64 bg-background p-6 shadow",
+              open ? slideLeft.in : slideLeft.out
+            )}
+          >
             <button
               className="absolute right-4 top-4"
               onClick={() => setOpen(false)}
