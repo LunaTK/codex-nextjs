@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Stock Price API
+
+This project exposes a simple endpoint to fetch current U.S. stock prices.
+
+Send a GET request to `/api/stocks?symbol=SYMBOL` where `SYMBOL` is the stock ticker. The data is retrieved from the free [Stooq](https://stooq.com/) service and returned as JSON.
+
+Example:
+
+```bash
+curl http://localhost:3000/api/stocks?symbol=AAPL
+```
+
+You can also test it in the browser by visiting `/stocks` and searching for a ticker symbol.
