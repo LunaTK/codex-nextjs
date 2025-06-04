@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import DateSelect from '@/components/date-select'
+import StockChart from '@/components/stock-chart'
 
 export default function StockSearchPage() {
   const [symbol, setSymbol] = useState('')
@@ -105,11 +106,9 @@ export default function StockSearchPage() {
       </button>
       {historyError && <p className="text-red-600">{historyError}</p>}
       {history && (
-        <ul className="border p-4 rounded space-y-1 text-sm font-mono overflow-x-auto">
-          {history.map((item, idx) => (
-            <li key={idx}>{JSON.stringify(item)}</li>
-          ))}
-        </ul>
+        <div className="border p-4 rounded">
+          <StockChart data={history} />
+        </div>
       )}
     </div>
   )
