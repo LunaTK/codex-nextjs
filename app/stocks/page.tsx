@@ -20,12 +20,14 @@ interface PriceError {
 
 export default function StockSearchPage() {
   const [symbolInput, setSymbolInput] = useState('')
-  const [searchSymbol, setSearchSymbol] = useState<string | null>(null)
+  const [searchSymbol, setSearchSymbol] = useState<
+    { symbol: string; id: number } | null
+  >(null)
 
 
   const pricePromise = useMemo<Promise<StockPrice | PriceError> | null>(() => {
     if (!searchSymbol) return null
-    return fetch(`/api/stocks?symbol=${searchSymbol}`)
+    return fetch(`/api/stocks?symbol=${searchSymbol.symbol}`)
       .then(async res => {
         const json: StockPrice | PriceError = await res.json()
         if (!res.ok) return { error: (json as PriceError).error || 'Failed to fetch' }
@@ -38,7 +40,7 @@ export default function StockSearchPage() {
   const searchPrice = () => {
     if (!symbolInput.trim()) return
     startTransition(() => {
-      setSearchSymbol(symbolInput.trim())
+      setSearchSymbol({ symbol: symbolInput.trim(), id: Date.now() })
     })
   }
 

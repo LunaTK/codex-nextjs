@@ -29,14 +29,15 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
   const [to, setTo] = useState(today.toISOString().slice(0, 16))
   const [unit, setUnit] = useState('1hour')
   const [historyParams, setHistoryParams] = useState<
-    { symbol: string; from: string; to: string; unit: string } | null
+    { symbol: string; from: string; to: string; unit: string; id: number } | null
   >(null)
 
   const historyPromise = useMemo<
     Promise<HistoryItem[] | HistoryError> | null
   >(() => {
     if (!historyParams) return null
-    const params = new URLSearchParams(historyParams).toString()
+    const { id: _id, ...query } = historyParams
+    const params = new URLSearchParams(query).toString()
     return fetch(`/api/stocks/history?${params}`)
       .then(async res => {
         const json: { data: HistoryItem[] } & Partial<HistoryError> =
@@ -50,7 +51,13 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
   const searchHistory = () => {
     if (!symbolInput.trim()) return
     startTransition(() => {
-      setHistoryParams({ symbol: symbolInput.trim(), from, to, unit })
+      setHistoryParams({
+        symbol: symbolInput.trim(),
+        from,
+        to,
+        unit,
+        id: Date.now(),
+      })
     })
   }
 
