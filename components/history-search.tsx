@@ -2,18 +2,11 @@
 
 import { useState, useMemo, startTransition, Suspense, use } from 'react'
 import DateSelect from '@/components/date-select'
+import ChartView, { HistoryItem } from '@/components/chart-view'
+import Tabs from '@/components/Tabs'
 
 interface HistorySearchProps {
   symbolInput: string
-}
-
-interface HistoryItem {
-  timestamp: string
-  open: number
-  high: number
-  low: number
-  close: number
-  volume: number
 }
 
 interface HistoryError {
@@ -31,6 +24,7 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
   const [historyParams, setHistoryParams] = useState<
     { symbol: string; from: string; to: string; unit: string } | null
   >(null)
+  const [view, setView] = useState<'raw' | 'chart'>('raw')
 
   const historyPromise = useMemo<
     Promise<HistoryItem[] | HistoryError> | null
@@ -69,21 +63,40 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
         Search History
       </button>
       {historyPromise && (
-        <Suspense fallback={<p>Loading...</p>}>
-          <HistoryResult promise={historyPromise} />
-        </Suspense>
+        <>
+          <Tabs
+            className="mt-4"
+            tabs={[
+              { label: 'Raw', value: 'raw' },
+              { label: 'Chart', value: 'chart' },
+            ]}
+            value={view}
+            onChange={setView}
+          />
+          <Suspense fallback={<p>Loading...</p>}>
+            <HistoryResult view={view} promise={historyPromise} />
+          </Suspense>
+        </>
       )}
     </div>
   )
 }
 
-function HistoryResult({ promise }: { promise: Promise<HistoryItem[] | HistoryError> }) {
+function HistoryResult({
+  promise,
+  view,
+}: {
+  promise: Promise<HistoryItem[] | HistoryError>
+  view: 'raw' | 'chart'
+}) {
   const result = use(promise)
   if ('error' in result) {
     return <p className="text-red-600">{result.error}</p>
   }
   const history = result
-  return (
+  return view === 'chart' ? (
+    <ChartView data={history} />
+  ) : (
     <ul className="border p-4 rounded space-y-1 text-sm font-mono overflow-x-auto">
       {history.map((item, idx) => (
         <li key={idx}>{JSON.stringify(item)}</li>
