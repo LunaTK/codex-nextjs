@@ -59,3 +59,11 @@ curl "http://localhost:3000/api/stocks/history?symbol=IBM&from=2025-05-01&to=202
 ```
 
 The API uses [Alpha Vantage](https://www.alphavantage.co/) under the hood. Set the `ALPHAVANTAGE_API_KEY` environment variable to use your own key; otherwise the `demo` key is used with limited data.
+
+## Running Tests
+
+Component tests are written with [Vitest](https://vitest.dev) and use [Mock Service Worker](https://mswjs.io) to stub network requests. Run them with:
+
+```bash
+pnpm test
+```

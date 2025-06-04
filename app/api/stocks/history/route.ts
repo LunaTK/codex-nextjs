@@ -48,14 +48,15 @@ export async function GET(req: NextRequest) {
       return Response.json({ error: 'Unexpected response from data provider' }, { status: 500 })
     }
 
-    const results = Object.entries(series)
+    const typedSeries = series as Record<string, Record<string, string>>
+    const results = Object.entries(typedSeries)
       .map(([timestamp, values]) => ({
         timestamp,
-        open: parseFloat((values as any)['1. open']),
-        high: parseFloat((values as any)['2. high']),
-        low: parseFloat((values as any)['3. low']),
-        close: parseFloat((values as any)['4. close']),
-        volume: parseInt((values as any)['5. volume'], 10)
+        open: parseFloat(values['1. open']),
+        high: parseFloat(values['2. high']),
+        low: parseFloat(values['3. low']),
+        close: parseFloat(values['4. close']),
+        volume: parseInt(values['5. volume'], 10)
       }))
       .filter(r => {
         const t = new Date(r.timestamp)
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
 
     return Response.json({ symbol, unit, data: results })
-  } catch (e: any) {
+  } catch (e: unknown) {
     return Response.json({ error: 'Unexpected error' }, { status: 500 })
   }
 }
