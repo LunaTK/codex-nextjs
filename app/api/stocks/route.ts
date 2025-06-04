@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       close: parseFloat(close),
       volume: parseInt(volume, 10)
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return Response.json({ error: 'Unexpected error' }, { status: 500 });
   }
 }
