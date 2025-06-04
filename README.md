@@ -42,3 +42,20 @@ curl http://localhost:3000/api/stocks?symbol=AAPL
 ```
 
 You can also test it in the browser by visiting `/stocks` and searching for a ticker symbol.
+
+## Stock Price History API
+
+Fetch historical prices by sending a GET request to `/api/stocks/history` with the following query parameters:
+
+- `symbol` – stock ticker symbol (required)
+- `from` – start date/time in ISO format (required)
+- `to` – end date/time in ISO format (required)
+- `unit` – data granularity: `5min`, `1hour`, or `day` (defaults to `day`)
+
+Example:
+
+```bash
+curl "http://localhost:3000/api/stocks/history?symbol=IBM&from=2025-05-01&to=2025-05-10&unit=day"
+```
+
+The API uses [Alpha Vantage](https://www.alphavantage.co/) under the hood. Set the `ALPHAVANTAGE_API_KEY` environment variable to use your own key; otherwise the `demo` key is used with limited data.
