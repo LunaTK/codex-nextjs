@@ -2,6 +2,8 @@
 
 import { useState, useMemo, startTransition, Suspense, use } from 'react'
 import DateSelect from '@/components/date-select'
+import Tabs, { TabItem } from '@/components/Tabs'
+import ChartView from '@/components/chart-view'
 
 interface HistorySearchProps {
   symbolInput: string
@@ -79,16 +81,32 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
 
 function HistoryResult({ promise }: { promise: Promise<HistoryItem[] | HistoryError> }) {
   const result = use(promise)
+  const [view, setView] = useState<'raw' | 'chart'>('raw')
+
   if ('error' in result) {
     return <p className="text-red-600">{result.error}</p>
   }
+
   const history = result
+
+  const tabs: TabItem[] = [
+    { label: 'Raw', value: 'raw' },
+    { label: 'Chart', value: 'chart' },
+  ]
+
   return (
-    <ul className="border p-4 rounded space-y-1 text-sm font-mono overflow-x-auto">
-      {history.map((item, idx) => (
-        <li key={idx}>{JSON.stringify(item)}</li>
-      ))}
-    </ul>
+    <div className="mt-4 space-y-4">
+      <Tabs tabs={tabs} value={view} onChange={(v) => setView(v as 'raw' | 'chart')} />
+      {view === 'raw' ? (
+        <ul className="border p-4 rounded space-y-1 text-sm font-mono overflow-x-auto">
+          {history.map((item, idx) => (
+            <li key={idx}>{JSON.stringify(item)}</li>
+          ))}
+        </ul>
+      ) : (
+        <ChartView data={history} />
+      )}
+    </div>
   )
 }
 
