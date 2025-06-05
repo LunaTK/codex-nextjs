@@ -2,17 +2,7 @@
 
 import { useState, startTransition, Suspense, use } from 'react'
 import HistorySearch from '@/components/history-search'
-
-interface StockPrice {
-  ticker: string
-  date: string
-  time: string
-  open: number
-  high: number
-  low: number
-  close: number
-  volume: number
-}
+import type { StockPrice } from '@/lib/types'
 
 interface PriceError {
   error: string

@@ -68,6 +68,9 @@ export default function Navbar() {
             <Link href="/stocks" onClick={() => setOpen(false)}>
               Stocks
             </Link>
+            <Link href="/showcase" onClick={() => setOpen(false)}>
+              Showcase
+            </Link>
           </nav>
         </div>
       </div>
