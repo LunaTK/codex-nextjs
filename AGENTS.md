@@ -8,3 +8,5 @@ pnpm test
 ```
 
 Make a best effort to ensure both commands complete successfully before committing changes.
+
+When creating PR, use git-flow like title.
