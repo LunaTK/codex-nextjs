@@ -31,7 +31,7 @@ export default function ChartView({ data }: { data: StockHistoryItem[] }) {
 
     const series = chart.addSeries(LineSeries, {
       lineWidth: 2,
-      color: "hsl(var(--chart-1))",
+      color: "#6366f1",
     })
 
     const lineData: LineData[] = data.map(item => ({
