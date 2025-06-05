@@ -2,6 +2,7 @@
 
 import { useState, startTransition, Suspense, use } from 'react'
 import HistorySearch from '@/components/history-search'
+import { Button } from '@/components/ui/button'
 import { StockPrice } from '@/utils/types'
 
 interface PriceError {
@@ -39,9 +40,9 @@ export default function StockSearchPage() {
           onChange={e => setSymbolInput(e.target.value)}
           placeholder="Enter symbol e.g. AAPL"
         />
-        <button className="border px-4 rounded" onClick={searchPrice}>
+        <Button onClick={searchPrice}>
           Search
-        </button>
+        </Button>
       </div>
       {pricePromise && (
         <Suspense fallback={<p>Loading...</p>}>

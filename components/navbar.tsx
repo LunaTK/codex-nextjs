@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Breadcrumb, BreadcrumbItem } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { fade, slideLeft } from "@/lib/transitions";
 import { cn } from "@/lib/utils";
 
@@ -26,13 +27,13 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background">
       <div className="container mx-auto flex items-center gap-4 p-4">
-        <button
+        <Button
           aria-label="Toggle Menu"
           className="md:hidden"
           onClick={() => setOpen(true)}
         >
           <Menu className="h-6 w-6" />
-        </button>
+        </Button>
         <Breadcrumb items={items} />
       </div>
       <div
@@ -54,13 +55,13 @@ export default function Navbar() {
             open ? slideLeft.in : slideLeft.out,
           )}
         >
-          <button
+          <Button
             className="absolute right-4 top-4"
             onClick={() => setOpen(false)}
             aria-label="Close Menu"
           >
             <X className="h-5 w-5" />
-          </button>
+          </Button>
           <nav className="mt-8 flex flex-col gap-4 text-sm">
             <Link href="/" onClick={() => setOpen(false)}>
               Home

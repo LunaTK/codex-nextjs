@@ -3,6 +3,7 @@
 import { useState, useMemo, startTransition, Suspense, use } from 'react'
 import DateSelect from '@/components/date-select'
 import ChartView from '@/components/chart-view'
+import { Button } from '@/components/ui/button'
 
 interface HistorySearchProps {
   symbolInput: string
@@ -66,9 +67,9 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
         setTo={setTo}
         setUnit={setUnit}
       />
-      <button className="border px-4 rounded mt-2" onClick={searchHistory}>
+      <Button className="mt-2" onClick={searchHistory}>
         Search History
-      </button>
+      </Button>
       {historyPromise && (
         <Suspense fallback={<p>Loading...</p>}>
           <HistoryResult promise={historyPromise} />
