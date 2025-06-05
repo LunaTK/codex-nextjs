@@ -30,7 +30,7 @@ export default function StockSearchPage() {
   }
 
   return (
-    <div className="p-8 flex flex-col gap-4 max-w-md mx-auto">
+    <div className="p-8 flex flex-col gap-4 max-w-md w-full mx-auto">
       <h1 className="text-2xl font-bold">Stock Price Lookup</h1>
       <div className="flex gap-2">
         <input
