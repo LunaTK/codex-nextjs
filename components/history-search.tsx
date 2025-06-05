@@ -2,6 +2,7 @@
 
 import { useState, useMemo, startTransition, Suspense, use } from 'react'
 import DateSelect from '@/components/date-select'
+import ChartView from '@/components/chart-view'
 
 interface HistorySearchProps {
   symbolInput: string
@@ -83,12 +84,6 @@ function HistoryResult({ promise }: { promise: Promise<HistoryItem[] | HistoryEr
     return <p className="text-red-600">{result.error}</p>
   }
   const history = result
-  return (
-    <ul className="border p-4 rounded space-y-1 text-sm font-mono overflow-x-auto">
-      {history.map((item, idx) => (
-        <li key={idx}>{JSON.stringify(item)}</li>
-      ))}
-    </ul>
-  )
+  return <ChartView data={history} />
 }
 
