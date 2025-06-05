@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, startTransition, Suspense, use } from 'react'
+import { useState, startTransition, Suspense, use } from 'react'
 import HistorySearch from '@/components/history-search'
 
 interface StockPrice {
@@ -20,30 +20,24 @@ interface PriceError {
 
 export default function StockSearchPage() {
   const [symbolInput, setSymbolInput] = useState('')
-  const [searchSymbol, setSearchSymbol] = useState<
-    { symbol: string; id: number } | null
+  const [pricePromise, setPricePromise] = useState<
+    Promise<StockPrice | PriceError> | null
   >(null)
 
-
-  const pricePromise = useMemo<Promise<StockPrice | PriceError> | null>(() => {
-    if (!searchSymbol) return null
-    return fetch(`/api/stocks?symbol=${searchSymbol.symbol}`)
-      .then(async res => {
-        const json: StockPrice | PriceError = await res.json()
-        if (!res.ok) return { error: (json as PriceError).error || 'Failed to fetch' }
-        return json as StockPrice
-      })
-      .catch((e: Error): PriceError => ({ error: e.message }))
-  }, [searchSymbol])
-
-
   const searchPrice = () => {
-    if (!symbolInput.trim()) return
+    const symbol = symbolInput.trim()
+    if (!symbol) return
     startTransition(() => {
-      setSearchSymbol({ symbol: symbolInput.trim(), id: Date.now() })
+      const promise = fetch(`/api/stocks?symbol=${symbol}`)
+        .then(async res => {
+          const json: StockPrice | PriceError = await res.json()
+          if (!res.ok) return { error: (json as PriceError).error || 'Failed to fetch' }
+          return json as StockPrice
+        })
+        .catch((e: Error): PriceError => ({ error: e.message }))
+      setPricePromise(promise)
     })
   }
-
 
   return (
     <div className="p-8 flex flex-col gap-4 max-w-md mx-auto">
