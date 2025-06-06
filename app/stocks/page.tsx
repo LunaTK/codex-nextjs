@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, startTransition, Suspense, use } from 'react'
+import { useState, startTransition, Suspense, use, useRef } from 'react'
+import { flushSync } from 'react-dom'
 import HistorySearch from '@/components/history-search'
 import { StockPrice } from '@/utils/types'
 
@@ -10,6 +11,7 @@ interface PriceError {
 
 export default function StockSearchPage() {
   const [symbolInput, setSymbolInput] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
   const [pricePromise, setPricePromise] = useState<
     Promise<StockPrice | PriceError> | null
   >(null)
@@ -34,9 +36,10 @@ export default function StockSearchPage() {
       <h1 className="text-2xl font-bold">Stock Price Lookup</h1>
       <div className="flex gap-2">
         <input
+          ref={inputRef}
           className="border px-2 py-1 flex-1 rounded"
           value={symbolInput}
-          onChange={e => setSymbolInput(e.target.value)}
+          onChange={e => flushSync(() => setSymbolInput(e.target.value))}
           placeholder="Enter symbol e.g. AAPL"
         />
         <button className="border px-4 rounded" onClick={searchPrice}>
@@ -49,7 +52,7 @@ export default function StockSearchPage() {
         </Suspense>
       )}
 
-      <HistorySearch symbolInput={symbolInput} />
+      <HistorySearch symbolInput={symbolInput} inputRef={inputRef} />
     </div>
   )
 }
