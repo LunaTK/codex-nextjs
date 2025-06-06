@@ -2,7 +2,7 @@
 
 import { useState, useMemo, startTransition, Suspense, use } from 'react'
 import DateSelect from '@/components/date-select'
-import ChartView from '@/components/chart-view'
+import StockChart from '@/components/stock-chart'
 
 interface HistorySearchProps {
   symbolInput: string
@@ -84,6 +84,6 @@ function HistoryResult({ promise }: { promise: Promise<HistoryItem[] | HistoryEr
     return <p className="text-red-600">{result.error}</p>
   }
   const history = result
-  return <ChartView data={history} />
+  return <StockChart data={history} />
 }
 
