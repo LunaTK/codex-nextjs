@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useMemo, startTransition, Suspense, use } from 'react'
+import { useState, useMemo, Suspense, use, RefObject } from 'react'
 import DateSelect from '@/components/date-select'
 import StockChart from '@/components/stock-chart'
 
 interface HistorySearchProps {
   symbolInput: string
+  inputRef: RefObject<HTMLInputElement | null>
 }
 
 interface HistoryItem {
@@ -21,7 +22,7 @@ interface HistoryError {
   error: string
 }
 
-export default function HistorySearch({ symbolInput }: HistorySearchProps) {
+export default function HistorySearch({ symbolInput, inputRef }: HistorySearchProps) {
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
   const today = new Date()
@@ -49,10 +50,9 @@ export default function HistorySearch({ symbolInput }: HistorySearchProps) {
   }, [historyParams])
 
   const searchHistory = () => {
-    if (!symbolInput.trim()) return
-    startTransition(() => {
-      setHistoryParams({ symbol: symbolInput.trim(), from, to, unit })
-    })
+    const symbol = inputRef.current?.value.trim() || symbolInput.trim()
+    if (!symbol) return
+    setHistoryParams({ symbol, from, to, unit })
   }
 
   return (
