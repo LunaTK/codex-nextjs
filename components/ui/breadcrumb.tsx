@@ -1,14 +1,14 @@
-import * as React from "react"
-import Link from "next/link"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export interface BreadcrumbItem {
-  href: string
-  label: string
+  href: string;
+  label: string;
 }
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
-  if (!items?.length) return null
+  if (!items?.length) return null;
   return (
     <nav aria-label="breadcrumb" className="text-sm flex items-center">
       {items.map((item, idx) => (
@@ -17,7 +17,7 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
             href={item.href}
             className={cn(
               "transition-colors hover:text-primary",
-              idx === items.length - 1 && "font-medium text-foreground"
+              idx === items.length - 1 && "font-medium text-foreground",
             )}
           >
             {item.label}
@@ -26,5 +26,5 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
         </span>
       ))}
     </nav>
-  )
+  );
 }

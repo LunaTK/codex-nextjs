@@ -1,15 +1,22 @@
-import React from 'react'
+import React from "react";
 
 interface DateSelectProps {
-  from: string
-  to: string
-  unit: string
-  setFrom: (v: string) => void
-  setTo: (v: string) => void
-  setUnit: (v: string) => void
+  from: string;
+  to: string;
+  unit: string;
+  setFrom: (v: string) => void;
+  setTo: (v: string) => void;
+  setUnit: (v: string) => void;
 }
 
-export default function DateSelect({ from, to, unit, setFrom, setTo, setUnit }: DateSelectProps) {
+export default function DateSelect({
+  from,
+  to,
+  unit,
+  setFrom,
+  setTo,
+  setUnit,
+}: DateSelectProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
@@ -18,7 +25,7 @@ export default function DateSelect({ from, to, unit, setFrom, setTo, setUnit }: 
           <input
             type="datetime-local"
             value={from}
-            onChange={e => setFrom(e.target.value)}
+            onChange={(e) => setFrom(e.target.value)}
             className="border px-2 py-1 rounded"
           />
         </label>
@@ -27,7 +34,7 @@ export default function DateSelect({ from, to, unit, setFrom, setTo, setUnit }: 
           <input
             type="datetime-local"
             value={to}
-            onChange={e => setTo(e.target.value)}
+            onChange={(e) => setTo(e.target.value)}
             className="border px-2 py-1 rounded"
           />
         </label>
@@ -36,7 +43,7 @@ export default function DateSelect({ from, to, unit, setFrom, setTo, setUnit }: 
         <span className="text-sm">Interval</span>
         <select
           value={unit}
-          onChange={e => setUnit(e.target.value)}
+          onChange={(e) => setUnit(e.target.value)}
           className="border px-2 py-1 rounded"
         >
           <option value="5min">5 min</option>
@@ -45,5 +52,5 @@ export default function DateSelect({ from, to, unit, setFrom, setTo, setUnit }: 
         </select>
       </label>
     </div>
-  )
+  );
 }

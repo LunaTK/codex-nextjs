@@ -1,27 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 interface PriceData {
-  ticker: string
-  close: number
+  ticker: string;
+  close: number;
 }
 
 export default function StockPriceWidget({ symbol }: { symbol: string }) {
-  const [data, setData] = useState<PriceData | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [data, setData] = useState<PriceData | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setData(null)
-    setError(null)
+    setData(null);
+    setError(null);
     fetch(`/api/stocks?symbol=${symbol}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((json: any) => {
-        if (json.error) throw new Error(json.error)
-        setData(json as PriceData)
+        if (json.error) throw new Error(json.error);
+        setData(json as PriceData);
       })
-      .catch(e => setError(e.message))
-  }, [symbol])
+      .catch((e) => setError(e.message));
+  }, [symbol]);
 
-  if (error) return <p role="alert">{error}</p>
-  if (!data) return <p>Loading...</p>
-  return <p>{data.ticker}: {data.close}</p>
+  if (error) return <p role="alert">{error}</p>;
+  if (!data) return <p>Loading...</p>;
+  return (
+    <p>
+      {data.ticker}: {data.close}
+    </p>
+  );
 }
